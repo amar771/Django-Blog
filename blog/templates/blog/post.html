@@ -45,7 +45,10 @@
       </div>
     </article>
 
-   
+    <div class="container">
+      <a class="btn float-right" href="{% url 'add_comment_to_post' pk=post.pk %}">Post comment</a>
+    </div>
+
     <hr>
     <div class="comment-box">
     {% for comment in post.comments.all %}
@@ -53,10 +56,14 @@
         {{comment.author}}
         <span style="float:right;">{{comment.created_date|date:"Y-m-d"}}</span>
       </div>
-      <div class = "commentBox">
+      <div class="commentBox">
         <div>{{comment.text}}</div>
       </div>
       <br />
+    {% empty %}
+      <div class="commentBox">
+        <div>No comments here yet.</div>
+      </div>
     {% endfor %}
     </div>
     <hr>
