@@ -52,14 +52,33 @@
     <hr>
     <div class="comment-box">
     {% for comment in post.comments.all %}
+      {% if comment.is_active %}
       <div>
         {{comment.author}}
+
+        {% if user.is_authenticated %}
+            <a class="btn" href="{% url 'comment_remove' pk=comment.pk %}">X</a>
+        {% endif %}
+
         <span style="float:right;">{{comment.created_date|date:"Y-m-d"}}</span>
       </div>
       <div class="commentBox">
         <div>{{comment.text}}</div>
       </div>
       <br />
+      {% elif not comment.is_active and user.is_authenticated %}
+        <div>
+          {{comment.author}}
+
+          <a class="btn" href="{% url 'comment_undelete' pk=comment.pk %}">Undo</a>
+
+          <span style="float:right;">{{comment.created_date|date:"Y-m-d"}}</span>
+        </div>
+        <div class="commentBox" style="color: red">
+          <div>{{comment.text}}</div>
+        </div>
+        <br />
+      {% endif %}
     {% empty %}
       <div class="commentBox">
         <div>No comments here yet.</div>

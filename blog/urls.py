@@ -16,5 +16,7 @@ urlpatterns = [
         name='add_comment_to_post'),
     url(r'^comment/(?P<pk>\d+)/remove/$', views.comment_remove,
         name='comment_remove'),
+    url(r'^comment/(?P<pk>\d+)', views.comment_undelete,
+        name='comment_undelete'),
     url(r'^deleted/$', views.deleted, name='deleted'),
 ]

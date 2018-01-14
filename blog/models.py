@@ -43,5 +43,9 @@ class Comment(models.Model):
         self.is_active = False
         self.save()
 
+    def undelete(self):
+        self.is_active = True
+        self.save()
+
     def __str__(self):
         return self.text

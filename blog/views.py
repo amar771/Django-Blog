@@ -128,6 +128,13 @@ def comment_remove(request, pk):
 
 
 @login_required
+def comment_undelete(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.undelete()
+    return redirect('post_detail', pk=comment.post.pk)
+
+
+@login_required
 def deleted(request):
     posts = Post.objects.filter(is_active=False).order_by('created_date')
     return render(request, 'blog/deleted_posts.html', {'posts': posts})
