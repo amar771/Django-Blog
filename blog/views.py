@@ -37,6 +37,15 @@ def index(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+
+    # Checks if post is deleted and is user authenticated to view it
+    if not post.is_active and not request.user.is_authenticated():
+        return redirect('post_list')
+
+    # Checks if post is published and is user authenticated to view it
+    if not post.published_date and not request.user.is_authenticated():
+        return redirect('post_list')
+
     return render(request, 'blog/post.html', {'post': post})
 
 
