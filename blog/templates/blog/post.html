@@ -45,5 +45,19 @@
       </div>
     </article>
 
+   
+    <hr>
+    <div class="comment-box">
+    {% for comment in post.comments.all %}
+      <div>
+        {{comment.author}}
+        <span style="float:right;">{{comment.created_date|date:"Y-m-d"}}</span>
+      </div>
+      <div class = "commentBox">
+        <div>{{comment.text}}</div>
+      </div>
+      <br />
+    {% endfor %}
+    </div>
     <hr>
 {% endblock %}
