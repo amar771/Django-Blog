@@ -19,4 +19,7 @@ urlpatterns = [
     url(r'^comment/(?P<pk>\d+)', views.comment_undelete,
         name='comment_undelete'),
     url(r'^deleted/$', views.deleted, name='deleted'),
+    url(r'^about$', views.about, name='about'),
+    url(r'^about/new$', views.about_new, name='about_new'),
+    url(r'^about/(?P<pk>\d+)/edit$', views.about_edit, name='about_edit'),
 ]

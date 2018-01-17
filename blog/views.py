@@ -5,8 +5,10 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from .models import Post
 from .models import Comment
+from .models import Me
 from .forms import PostForm
 from .forms import CommentForm
+from .forms import MeForm
 
 # Create your views here.
 
@@ -138,3 +140,53 @@ def comment_undelete(request, pk):
 def deleted(request):
     posts = Post.objects.filter(is_active=False).order_by('created_date')
     return render(request, 'blog/deleted_posts.html', {'posts': posts})
+
+
+def about_empty(request):
+    return render(request, 'blog/about_empty.html')
+
+
+def about(request):
+    '''
+    Implemented this way becuase I don't want to show 404 page with
+    get_object_or_404, if I find a better way, this will be chagned.
+    '''
+    mes = Me.objects.filter(is_active=True)
+
+    if not mes:
+        return about_empty(request)
+
+    return render(request, 'blog/about.html', {'mes': mes})
+
+
+@login_required
+def about_new(request):
+    if request.method == "POST":
+        form = MeForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('about')
+
+    else:
+        form = MeForm()
+
+    return render(request, 'blog/about_edit.html', {'form': form})
+
+
+@login_required
+def about_edit(request, pk):
+    me = get_object_or_404(Me, pk=pk)
+    if request.method == "POST":
+        form = MeForm(request.POST, instance=me)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('about')
+
+    else:
+        form = MeForm(instance=me)
+
+    return render(request, 'blog/about_edit.html', {'form': form})

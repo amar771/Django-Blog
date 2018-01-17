@@ -14,20 +14,17 @@
       </div>
     </header>
 
-    <!-- Main Content -->    
+    <!-- Main Content -->   
     <article>
-      {% for me in mes %}
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            {{ me.text }}
+            {% if user.is_authenticated %}
+               <a class="btn " href="{% url 'about_new' %}">Add something about YOU</a>
+            {% endif %}
+            <p>Nothing here :(</p>
           </div>
         </div>
-        {% if user.is_authenticated %}
-          <a class="btn btn-primary float-left" href="{% url 'about_edit' pk=me.pk %}">Edit</a>
-        {% endif %}
       </div>
-      {% endfor %}
     </article>
-
 {% endblock %}

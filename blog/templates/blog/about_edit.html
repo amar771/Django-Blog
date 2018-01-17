@@ -2,18 +2,12 @@
 
 {% block content %}
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+    <header class="masthead" style="magin-bottom:0px;">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="post-heading">
-              <h1>Title goes here</h1>
-              <!-- IF YOU DECIDE SUBHEADINGS {{ post.subtitle }}-->
-              <h2 class="subheading"></h2>
-              <span class="meta">Will be posted by
-                <a href="#">{{ user.username }}</a>
-                on some day</span>
+            <div class="post-heading" style="padding:35px">
             </div>
           </div>
         </div>
@@ -22,7 +16,7 @@
 
     <!-- Main Content -->
     <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
+        {{ form.as_p}}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
 {% endblock %}

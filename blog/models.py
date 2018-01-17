@@ -49,3 +49,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Me(models.Model):
+    author = models.ForeignKey('auth.User')
+    text = models.TextField()
+    is_active = models.BooleanField(default=True)
