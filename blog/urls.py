@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^about$', views.about, name='about'),
     url(r'^about/new$', views.about_new, name='about_new'),
     url(r'^about/(?P<pk>\d+)/edit$', views.about_edit, name='about_edit'),
+    url(r'^contact$', views.contact, name='contact'),
 ]

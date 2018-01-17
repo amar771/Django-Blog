@@ -10,8 +10,6 @@ from .forms import PostForm
 from .forms import CommentForm
 from .forms import MeForm
 
-# Create your views here.
-
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).\
@@ -190,3 +188,7 @@ def about_edit(request, pk):
         form = MeForm(instance=me)
 
     return render(request, 'blog/about_edit.html', {'form': form})
+
+
+def contact(request):
+    return render(request, 'blog/contact.html')
