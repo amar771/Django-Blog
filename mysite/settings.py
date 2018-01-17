@@ -121,6 +121,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+'''
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/static/'
+    # '/var/www/static/',
+]
+'''
+
 ALLOWED_HOSTS = ['127.0.0.1', 'amar771.pythonanywhere.com', 'localhost']
 
 DATABASES = {
