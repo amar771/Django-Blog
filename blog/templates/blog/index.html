@@ -1,9 +1,10 @@
 {% extends 'blog/base.html' %}
+{% load staticfiles %}
 
 {% block content %}
 
     <!-- Page Header -->
-      <header class="masthead" style="background-image: url('img/thinkpad-01.jpg')">
+      <header class="masthead" style="background-image: url('{% static 'img/thinkpad-01.jpg' %}')">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
