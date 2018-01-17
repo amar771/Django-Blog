@@ -3,6 +3,9 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
 from .models import Post
 from .models import Comment
 from .models import Me
@@ -13,19 +16,21 @@ from .forms import MeForm
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).\
+                                filter(is_active=True).\
                                 order_by('-published_date')
 
-    # Old way of truncating words...
-    '''
-    for post in posts:
-        newPost = post.text.split()
-        newPost = newPost[:10]
-        post.text = ''
-        for word in newPost:
-            post.text += word
-            post.text += ' '
-        post.text += '\n...'
-    '''
+    paginator = Paginator(posts, 2)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.first
+        posts = paginator.page(1)
+
+    except EmptyPage:
+        # If page is out of range, deliver last page of results.page
+        posts = paginator.page(paginator.num_pages)
 
     # return render(request, 'blog/post_list.html', {'posts': posts})
     return render(request, 'blog/index.html', {'posts': posts})
