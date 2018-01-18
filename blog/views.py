@@ -19,7 +19,7 @@ def post_list(request):
                                 filter(is_active=True).\
                                 order_by('-published_date')
 
-    paginator = Paginator(posts, 2)
+    paginator = Paginator(posts, 25)
     page = request.GET.get('page')
     try:
         posts = paginator.page(page)

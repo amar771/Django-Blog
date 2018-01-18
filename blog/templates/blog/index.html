@@ -4,7 +4,7 @@
 {% block content %}
 
     <!-- Page Header -->
-      <header class="masthead" style="background-image: url('{% static 'img/thinkpad-01.jpg' %}')">
+    <header class="masthead" style="background-image: url('{% static 'img/thinkpad-01.jpg' %}')">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
@@ -40,20 +40,22 @@
         {% endfor %}
 
           <!-- Pager -->
-          {% if posts.has_next %}
-            <div class="clearfix">
-              <a class="btn btn-primary float-right" href="?page={{ posts.next_page_number }}">Older Posts &rarr;</a>
-          {% endif %}
 
-              <span"> Page {{ posts.number }} of {{ posts.paginator.num_pages }}.</span>
+          <div class="clearfix" style="text-align: center;">
+            <span align="center"> Page {{ posts.number }} of {{ posts.paginator.num_pages }}</span>
 
-          {% if posts.has_previous %}
+            {% if posts.has_previous %}
               <a class="btn btn-primary float-left" href="?page={{ posts.previous_page_number }}">&larr; Newer Posts</a>
-            </div>
-          {% endif %}
+            {% endif %}
+
+            {% if posts.has_next %}
+              <a class="btn btn-primary float-right" href="?page={{ posts.next_page_number }}">Older Posts &rarr;</a>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
+
 
     <hr>
 {% endblock %}
