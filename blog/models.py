@@ -3,16 +3,30 @@ from django.utils import timezone
 # Create your models here.
 
 
+def upload_location(instance, filename):
+    return "%s/%s" % (instance.id, filename)
+
+
 class Post(models.Model):
     # Link to another model
     author = models.ForeignKey('auth.User')
     # Defines text
     title = models.CharField(max_length=200)
     text = models.TextField()
+
     created_date = models.DateTimeField(
         default=timezone.now)
     published_date = models.DateTimeField(
         blank=True, null=True)
+
+    height_field = models.IntegerField(default=0)
+    width_field = models.IntegerField(default=0)
+    image = models.ImageField(upload_to=upload_location,
+                              null=True,
+                              blank=True,
+                              width_field="width_field",
+                              height_field="height_field")
+
     is_active = models.BooleanField(default=True)
 
     def publish(self):

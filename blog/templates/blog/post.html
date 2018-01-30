@@ -2,7 +2,11 @@
 
 {% block content %}
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+    {% if post.image %}
+    <header class="masthead" style="background-image: url('{{ post.image.url }}')">
+    {% else %}
+    <header class="masthead" style="background-image: url('')">
+    {% endif %}
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
