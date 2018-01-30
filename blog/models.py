@@ -1,10 +1,32 @@
 from django.db import models
 from django.utils import timezone
+
+# https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+
 # Create your models here.
-
-
 def upload_location(instance, filename):
     return "%s/%s" % (instance.id, filename)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    # User data
+    bio = models.TextField(blank=True)
+    location = models.CharField(max_length=50, blank=True)
+    birth_date = models.DateTimeField(null=True, blank=True)
+    workplace = models.CharField(max_length=200, blank=True)
+
+    # Social networks
+    github_link = models.CharField(max_length=250, blank=True)
+    facebook_link = models.CharField(max_length=250, blank=True)
+    linkedin_link = models.CharField(max_length=250, blank=True)
+    twitter_link = models.CharField(max_length=250, blank=True)
+    stackoverflow_link = models.CharField(max_length=250, blank=True)
 
 
 class Post(models.Model):
@@ -69,3 +91,14 @@ class Me(models.Model):
     author = models.ForeignKey('auth.User')
     text = models.TextField()
     is_active = models.BooleanField(default=True)
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
