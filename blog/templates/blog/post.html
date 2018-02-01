@@ -32,19 +32,37 @@
             <p>{{ post.text }}</p>
           </div>
         </div>
-        {% if not post.published_date %}
+        {% if not post.published_date and user.is_authenticated %}
         <div class="clearfix">
-          <a class="btn btn-primary float-right" href="{% url 'post_publish' slug=post.slug %}">Publish &rarr;</a>
+          <ul>
+
+            <a class="btn btn-primary" href="{% url 'post_publish' slug=post.slug %}">Publish</a>
+            
+            <a class="btn btn-primary float-left" href="{% url 'post_edit' slug=post.slug %}">Edit</a>
+           
+            <a class="btn btn-primary float-right" href="{% url 'post_remove' pk=post.pk %}">Delete</a>
+          </ul>
+        </div>
+        {% elif not post.is_active and user.is_authenticated %}
+        <div class="clearfix">
+          <ul>
+
+            <a class="btn btn-primary" href="{% url 'post_publish' slug=post.slug %}">Publish</a>
+
+            <a class="btn btn-primary float-left" href="{% url 'post_edit' slug=post.slug %}">Edit</a>
+
+          </ul>
         </div>
         {% elif user.is_authenticated %}
+        <div class="clearfix">
+          <ul>
 
-        <ul>
             <a class="btn btn-primary float-left" href="{% url 'post_edit' slug=post.slug %}">Edit</a>
 
             <a class="btn btn-primary float-right" href="{% url 'post_remove' pk=post.pk %}">Delete</a>
-        </ul>
-        
-        <div class="clearfix"></div>
+
+          </ul>
+        </div>
         {% endif %}
       </div>
     </article>

@@ -58,6 +58,7 @@ class Post(models.Model):
 
     def publish(self):
         self.published_date = timezone.now()
+        self.is_active = True
         self.save()
 
     def delete(self):
