@@ -34,12 +34,12 @@
         </div>
         {% if not post.published_date %}
         <div class="clearfix">
-          <a class="btn btn-primary float-right" href="{% url 'post_publish' pk=post.pk %}">Publish &rarr;</a>
+          <a class="btn btn-primary float-right" href="{% url 'post_publish' slug=post.slug %}">Publish &rarr;</a>
         </div>
         {% elif user.is_authenticated %}
 
         <ul>
-            <a class="btn btn-primary float-left" href="{% url 'post_edit' pk=post.pk %}">Edit</a>
+            <a class="btn btn-primary float-left" href="{% url 'post_edit' slug=post.slug %}">Edit</a>
 
             <a class="btn btn-primary float-right" href="{% url 'post_remove' pk=post.pk %}">Delete</a>
         </ul>

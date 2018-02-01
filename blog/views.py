@@ -40,8 +40,8 @@ def index(request):
     return redirect('post_list')
 
 
-def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+def post_detail(request, slug):
+    post = get_object_or_404(Post, slug=slug)
 
     # Checks if post is deleted and is user authenticated to view it
     if not post.is_active and not request.user.is_authenticated():
@@ -62,7 +62,7 @@ def post_new(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect('post_detail', pk=post.pk)
+            return redirect('post_detail', slug=post.slug)
 
     else:
         form = PostForm()
@@ -71,15 +71,15 @@ def post_new(request):
 
 
 @login_required
-def post_edit(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+def post_edit(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES or None, instance=post,)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect('post_detail', pk=post.pk)
+            return redirect('post_detail', slug=post.slug)
 
     else:
         form = PostForm(instance=post)
@@ -96,10 +96,10 @@ def post_draft_list(request):
 
 
 @login_required
-def post_publish(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+def post_publish(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     post.publish()
-    return redirect('post_detail', pk=pk)
+    return redirect('post_detail', slug=slug)
 
 
 @login_required
@@ -117,7 +117,7 @@ def add_comment_to_post(request, pk):
             comment = form.save(commit=False)
             comment.post = post
             comment.save()
-            return redirect('post_detail', pk=post.pk)
+            return redirect('post_detail', slug=post.slug)
 
     else:
         form = CommentForm()
@@ -187,54 +187,6 @@ def about_edit(request, pk):
         form = ProfileForm(instance=profile)
 
     return render(request, 'blog/about_edit.html', {'form': form})
-
-
-'''
-def about(request):
-    
-    Implemented this way becuase I don't want to show 404 page with
-    get_object_or_404, if I find a better way, this will be chagned.
-    
-    mes = Me.objects.filter(is_active=True)
-
-    if not mes:
-        return about_empty(request)
-
-    return render(request, 'blog/about.html', {'mes': mes})
-
-
-@login_required
-def about_new(request):
-    if request.method == "POST":
-        form = MeForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('about')
-
-    else:
-        form = MeForm()
-
-    return render(request, 'blog/about_edit.html', {'form': form})
-
-
-@login_required
-def about_edit(request, pk):
-    me = get_object_or_404(Me, pk=pk)
-    if request.method == "POST":
-        form = MeForm(request.POST, instance=me)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('about')
-
-    else:
-        form = MeForm(instance=me)
-
-    return render(request, 'blog/about_edit.html', {'form': form})
-'''
 
 
 def contact(request):

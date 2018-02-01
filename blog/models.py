@@ -6,6 +6,10 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+# Slug
+from django.db.models.signals import pre_save
+from django.utils.text import slugify
+
 
 # Create your models here.
 def upload_location(instance, filename):
@@ -34,6 +38,7 @@ class Post(models.Model):
     author = models.ForeignKey('auth.User')
     # Defines text
     title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
     text = models.TextField()
 
     created_date = models.DateTimeField(
@@ -96,3 +101,26 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+# Recursive function that creates slug
+def create_slug(instance, new_slug=None):
+    slug = slugify(instance.title)
+    if new_slug is not None:
+        slug = new_slug
+
+    query_set = Post.objects.filter(slug=slug).order_by("-id")
+    exists = query_set.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, query_set.first().id)
+        return create_slug(instance, new_slug=new_slug)
+
+    return slug
+
+
+def pre_save_post_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_slug(instance)
+
+
+pre_save.connect(pre_save_post_receiver, sender=Post)
