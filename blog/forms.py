@@ -2,7 +2,6 @@ from django import forms
 from .models import Post
 from .models import Comment
 from .models import Profile
-from .models import Me
 
 
 class PostForm(forms.ModelForm):
@@ -34,10 +33,3 @@ class ProfileForm(forms.ModelForm):
                   'linkedin_link',
                   'twitter_link',
                   'stackoverflow_link',)
-
-
-class MeForm(forms.ModelForm):
-
-    class Meta:
-        model = Me
-        fields = ('text',)

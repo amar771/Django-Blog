@@ -8,10 +8,10 @@ from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 from .models import Post
 from .models import Comment
-from .models import Me
+from .models import Profile
 from .forms import PostForm
 from .forms import CommentForm
-from .forms import MeForm
+from .forms import ProfileForm
 
 
 def post_list(request):
@@ -150,10 +150,51 @@ def about_empty(request):
 
 
 def about(request):
-    '''
+    profile = Profile.objects.filter(pk=1)
+
+    if not profile:
+        return about_empty(request)
+
+    return render(request, 'blog/about.html', {'profile': profile})
+
+
+@login_required
+def about_new(request):
+    if request.method == "POST":
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('about')
+
+        else:
+            form = ProfileForm
+
+
+@login_required
+def about_edit(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+    if request.method == "POST":
+        form = ProfileForm(request.post, instance=profile)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('about')
+
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(request, 'blog/about_edit.html', {'form': form})
+
+
+'''
+def about(request):
+    
     Implemented this way becuase I don't want to show 404 page with
     get_object_or_404, if I find a better way, this will be chagned.
-    '''
+    
     mes = Me.objects.filter(is_active=True)
 
     if not mes:
@@ -193,6 +234,7 @@ def about_edit(request, pk):
         form = MeForm(instance=me)
 
     return render(request, 'blog/about_edit.html', {'form': form})
+'''
 
 
 def contact(request):

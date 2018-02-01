@@ -16,15 +16,27 @@
 
     <!-- Main Content -->    
     <article>
-      {% for me in mes %}
+      {% for you in profile %}
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            {{ me.text }}
+            {{ you.bio }}
+          </div>
+          <div class="col-lg-8 col-md-10 mx-auto">
+            {{ you.github_link }}
+          </div>
+          <div class="col-lg-8 col-md-10 mx-auto">
+            {{ you.facebook_link }}
+          </div>
+          <div class="col-lg-8 col-md-10 mx-auto">
+            {{ you.stackoverflow_link }}
+          </div>
+          <div class="col-lg-8 col-md-10 mx-auto">
+            {{ you.twitter_link }}
           </div>
         </div>
         {% if user.is_authenticated %}
-          <a class="btn btn-primary float-left" href="{% url 'about_edit' pk=me.pk %}">Edit</a>
+          <a class="btn btn-primary float-left" href="{% url 'about_edit' pk=you.pk %}">Edit</a>
         {% endif %}
       </div>
       {% endfor %}
