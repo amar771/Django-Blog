@@ -16,6 +16,12 @@
 
 }
 
+.post-box {
+    width: 30%;
+    margin:auto;
+    text-align: left;
+}
+
 .post-form textarea, .post-form input {
     width: 100%;
 }
