@@ -11,7 +11,7 @@ class PostForm(forms.ModelForm):
         fields = ('title',
                   'subtitle',
                   'image',
-                  'text',)
+                  'plain_text',)
 
 
 class CommentForm(forms.ModelForm):

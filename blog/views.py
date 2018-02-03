@@ -13,6 +13,18 @@ from .forms import PostForm
 from .forms import CommentForm
 from .forms import ProfileForm
 
+import requests
+
+
+def github_markdown(plain_text):
+    headers = {'Content-Type': 'text/plain'}
+
+    request = requests.post('https://api.github.com/markdown/raw',
+                            headers=headers,
+                            data=plain_text)
+
+    return request.text
+
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).\
@@ -61,6 +73,7 @@ def post_new(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
+            post.text = github_markdown(post.plain_text)
             post.save()
             return redirect('post_detail', slug=post.slug)
 

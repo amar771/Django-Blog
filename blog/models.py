@@ -35,12 +35,16 @@ class Profile(models.Model):
 
 class Post(models.Model):
     # Link to another model
+
     author = models.ForeignKey('auth.User')
-    # Defines text
+
+    # Defines title and gets url from title
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=750)
-    # Gets url from title
     slug = models.SlugField(unique=True)
+
+    # Plain text and github markdownified text
+    plain_text = models.TextField()
     text = models.TextField()
 
     created_date = models.DateTimeField(
