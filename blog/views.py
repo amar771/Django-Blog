@@ -91,6 +91,7 @@ def post_edit(request, slug):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
+            post.text = github_markdown(post.plain_text)
             post.save()
             return redirect('post_detail', slug=post.slug)
 
