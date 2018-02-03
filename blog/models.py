@@ -38,6 +38,8 @@ class Post(models.Model):
     author = models.ForeignKey('auth.User')
     # Defines text
     title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=750)
+    # Gets url from title
     slug = models.SlugField(unique=True)
     text = models.TextField()
 
