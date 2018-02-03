@@ -87,7 +87,7 @@
         <span style="float:right;">{{comment.created_date|date:"Y-m-d"}}</span>
       </div>
       <div class="commentBox">
-        <div>{{comment.text}}</div>
+        <div>{{comment.text|linebreaks }}</div>
       </div>
       <br />
       {% elif not comment.is_active and user.is_authenticated %}
@@ -99,7 +99,7 @@
           <span style="float:right;">{{comment.created_date|date:"Y-m-d"}}</span>
         </div>
         <div class="commentBox" style="color: red">
-          <div>{{comment.text}}</div>
+          <div>{{ comment.text|linebreaks }}</div>
         </div>
         <br />
       {% endif %}
