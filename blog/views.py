@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
+from django.db.models import Q
 from .models import Post
 from .models import Comment
 from .models import Profile
@@ -19,18 +20,36 @@ def post_list(request):
                                 filter(is_active=True).\
                                 order_by('-published_date')
 
-    paginator = Paginator(posts, 25)
+    paginator = Paginator(posts, 10)
     page = request.GET.get('page')
-    try:
-        posts = paginator.page(page)
 
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.first
-        posts = paginator.page(1)
+    # If query exists do pagination for query
+    query = request.GET.get("q")
+    if query:
+        posts = posts.filter(Q(title__icontains=query) |
+                             Q(subtitle__icontains=query))
 
-    except EmptyPage:
-        # If page is out of range, deliver last page of results.page
-        posts = paginator.page(paginator.num_pages)
+        try:
+            posts = paginator.page(page)
+
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+    # If query does not exist do standard pagination
+    else:
+        try:
+            posts = paginator.page(page)
+
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.first
+            posts = paginator.page(1)
+
+        except EmptyPage:
+            # If page is out of range, deliver last page of results.page
+            posts = paginator.page(paginator.num_pages)
 
     # return render(request, 'blog/post_list.html', {'posts': posts})
     return render(request, 'blog/index.html', {'posts': posts})
@@ -191,3 +210,9 @@ def about_edit(request, pk):
 
 def contact(request):
     return render(request, 'blog/contact.html')
+
+
+def search(request):
+    query = request.GET.get("q")
+    if query:
+        queryset_list = queryset_list.filter(title__icontains=query)

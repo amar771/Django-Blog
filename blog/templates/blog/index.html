@@ -1,61 +1,72 @@
 {% extends 'blog/base.html' %}
 {% load staticfiles %}
 
+{% block navigation_search %}
+
+  <!-- Search -->
+  <form method='GET' action=''>
+    <input type='text' name='q' placeholder="Search posts" value='{{ request.GET.q }}' /n>
+    <input type='submit' value='Search' />
+  </form>
+
+{% endblock %}
+
 {% block content %}
 
-    <!-- Page Header -->
-    <header class="masthead" style="background-image: url('{% static 'img/thinkpad-01.jpg' %}')">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading" style="padding-top: 80px; padding-bottom: 50px; ">
-              <h1>Amar's Blog</h1>
-              <span class="subheading">Blog for DevOps, System Administration, Linux and some programming</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-    <!-- Main Content -->
-
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{% static 'img/thinkpad-01.jpg' %}')">
+    <div class="overlay"></div>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-        {% for post in posts %}
-            <div class="post-preview">
-              <a href="{% url 'post_detail' slug=post.slug %}">
-                <h2 class="post-title">
-                 {{ post.title }}
-                </h2>
-                <h3 class="post-subtitle">
-                  {{ post.subtitle }}
-                </h3>
-              </a>
-              <p class="post-meta">Posted by
-                <a href="{% url 'about' %}">{{ post.author}}</a>
-                on {{ post.published_date }}</p>
-            </div>
-            <hr>
-        {% endfor %}
-
-          <!-- Pager -->
-
-          <div class="clearfix" style="text-align: center;">
-            <span align="center"> Page {{ posts.number }} of {{ posts.paginator.num_pages }}</span>
-
-            {% if posts.has_previous %}
-              <a class="btn btn-primary float-left" href="?page={{ posts.previous_page_number }}">&larr; Newer Posts</a>
-            {% endif %}
-
-            {% if posts.has_next %}
-              <a class="btn btn-primary float-right" href="?page={{ posts.next_page_number }}">Older Posts &rarr;</a>
-            {% endif %}
+          <div class="site-heading" style="padding-top: 80px; padding-bottom: 50px; ">
+            <h1>Amar's Blog</h1>
+            <span class="subheading">Blog for DevOps, System Administration, Linux and some programming</span>
           </div>
         </div>
       </div>
     </div>
+  </header>
 
+  <!-- Main Content -->
 
-    <hr>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+      {% for post in posts %}
+          <div class="post-preview">
+            <a href="{% url 'post_detail' slug=post.slug %}">
+              <h2 class="post-title">
+               {{ post.title }}
+              </h2>
+              <h3 class="post-subtitle">
+                {{ post.subtitle }}
+              </h3>
+            </a>
+            <p class="post-meta">Posted by
+              <a href="{% url 'about' %}">{{ post.author}}</a>
+              on {{ post.published_date }}</p>
+          </div>
+          <hr>
+      {% endfor %}
+
+        <!-- Pager -->
+
+        <div class="clearfix" style="text-align: center;">
+          <span align="center"> Page {{ posts.number }} of {{ posts.paginator.num_pages }}</span>
+
+          {% if posts.has_previous %}
+            <a class="btn btn-primary float-left" href="?page={{ posts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&larr; Newer Posts</a>
+          {% endif %}
+
+          {% if posts.has_next %}
+            <a class="btn btn-primary float-right" href="?page={{ posts.next_page_number }}{% if request.GET.q %}&q={{request.GET.q }}{% endif %}">Older Posts &rarr;</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
 {% endblock %}
