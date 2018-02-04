@@ -14,6 +14,10 @@ from django.utils.text import slugify
 from django.utils.safestring import mark_safe
 from markdown_deux import markdown
 
+# For getting absolute url
+from django.core.urlresolvers import reverse
+from django.http import HttpRequest
+
 
 # Create your models here.
 def upload_location(instance, filename):
@@ -67,6 +71,9 @@ class Post(models.Model):
                               height_field="height_field")
 
     is_active = models.BooleanField(default=True)
+
+    def get_absolute_url(self):
+        return reverse("post_detail", kwargs={"slug": self.slug})
 
     def publish(self):
         self.published_date = timezone.now()
