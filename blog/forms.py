@@ -3,15 +3,19 @@ from .models import Post
 from .models import Comment
 from .models import Profile
 
+from pagedown.widgets import PagedownWidget
+
 
 class PostForm(forms.ModelForm):
+
+    text = forms.CharField(widget=PagedownWidget())
 
     class Meta:
         model = Post
         fields = ('title',
                   'subtitle',
                   'image',
-                  'plain_text',)
+                  'text',)
 
 
 class CommentForm(forms.ModelForm):
@@ -22,6 +26,8 @@ class CommentForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
+
+    bio = forms.CharField(widget=PagedownWidget())
 
     class Meta:
         model = Profile

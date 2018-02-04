@@ -40,6 +40,9 @@ INSTALLED_APPS = [
 
     # Local
     'blog',
+
+    # Third party applications
+    'pagedown',
 ]
 
 MIDDLEWARE = [

@@ -1,5 +1,11 @@
 {% extends 'blog/base.html' %}
 
+{% block head_media %}
+
+  {{ form.media }}
+
+{% endblock %}
+
 {% block content %}
     <!-- Page Header -->
     <header class="masthead" style="background-image: url('img/post-bg.jpg')">
