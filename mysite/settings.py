@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Third party applications
     'pagedown',
     'markdown_deux',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -159,3 +160,5 @@ MARKDOWN_DEUX_STYLES = {
         },
     },
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

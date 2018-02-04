@@ -33,9 +33,15 @@
   border-color: solid black;
   border-radius: 4px;
 }
+
 .precode {
     padding-left: 0.1rem;
     padding-right: 0.1rem;
     border: 0.05rem solid;
     border-color: #bcbcbc;
+}
+
+.wmd-panel {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
 }

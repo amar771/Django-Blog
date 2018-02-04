@@ -1,6 +1,7 @@
 certifi==2018.1.18
 chardet==3.0.4
 Django==1.11.9
+django-crispy-forms==1.7.0
 django-markdown-deux==1.0.5
 django-pagedown==1.0.4
 idna==2.6
