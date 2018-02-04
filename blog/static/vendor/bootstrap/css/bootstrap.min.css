@@ -25,3 +25,10 @@
 .post-form textarea, .post-form input {
     width: 120%;
 }
+
+.codify {
+  color: #e83e8c;
+  word-break: break-word;
+  border-color: BLACK;
+  border: 5px;
+}

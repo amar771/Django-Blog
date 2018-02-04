@@ -148,3 +148,13 @@ DATABASES = {
 }
 
 LOGIN_REDIRECT_URL = '/'
+
+# Adds class="img-fluid" to every img tag by default
+MARKDOWN_DEUX_STYLES = {
+    "default": {
+        "extras": {
+            "html-classes": {"img": "img-fluid",
+                             "code": "codify"},
+        },
+    },
+}
