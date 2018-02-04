@@ -51,7 +51,6 @@ class Post(models.Model):
     subtitle = models.CharField(max_length=750)
     slug = models.SlugField(unique=True)
 
-    plain_text = models.TextField()
     text = models.TextField()
 
     created_date = models.DateTimeField(
