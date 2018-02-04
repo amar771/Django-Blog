@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 {% load urlify %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <!-- Page Header -->
@@ -73,41 +74,44 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <ul>
-            <a class="btn" href="https://twitter.com/home?status={{ post.subtitle|urlify }}%20{{ request.build_absolute_uri }}">Twitter</a>
+            <a class="fa fa-2x fa-twitter-square" href="https://twitter.com/home?status={{ post.subtitle|urlify }}%20{{ request.build_absolute_uri }}"></a>
 
-            <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">Facebook</a>
+            <a class="fa fa-2x fa-facebook-square" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"></a>
 
-            <a class="btn" href="https://plus.google.com/share?url={{ request.build_absolute_uri }}">Google+</a>
+            <a class="fa fa-2x fa-google-plus-square" href="https://plus.google.com/share?url={{ request.build_absolute_uri }}"></a>
 
-            <a class="btn" href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title|urlify  }}&summary={{ post.subtitle|urlify }}&source={{ request.build_absolute_uri }}">Linkedin</a>
+            <a class="fa fa-2x fa-linkedin-square" href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title|urlify  }}&summary={{ post.subtitle|urlify }}&source={{ request.build_absolute_uri }}"></a>
 
-            <a class="btn" href="https://www.reddit.com/submit?url={{ request.build_absolute_uri }}&title={{ post.title|urlify }}">Reddit</a>
+            <a class="fa fa-2x fa-reddit-square" href="https://www.reddit.com/submit?url={{ request.build_absolute_uri }}&title={{ post.title|urlify }}"></a>
           </ul>
         </div>
       </div>
     </div>
-
-    <!-- Post Comments -->
-    <div class="container">
-      <a class="btn float-right" href="{% url 'add_comment_to_post' pk=post.pk %}">Post comment</a>
-    </div>
-
-    <hr>
+  
+    <!-- Comments -->
+    <form method="POST" class="form-control-sm" action='.'>{% csrf_token %}
+      <div class="comment-box">
+            <div>{{ form|crispy }}</div>
+          
+            <button type="submit" class="save btn btn-default">Post</button>
+      </div>
+    </form>
 
     <div class="comment-box">
     {% for comment in post.comments.all %}
       {% if comment.is_active %}
       <div>
-        {{comment.author}}
+        <span style="float:left">{{comment.author}}</span>
 
         {% if user.is_authenticated %}
-            <a class="btn" href="{% url 'comment_remove' pk=comment.pk %}">X</a>
-        {% endif %}
+            <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">X</a>
+        {% endif %} 
 
-        <span style="float:right;">{{comment.created_date|date:"Y-m-d"}}</span>
+        <span style="float:right">  [{{comment.created_date|date:"Y-m-d"}}]</span>
+        <span style="float:right;">{{comment.created_date|timesince}} ago  </span>
       </div>
       <div class="commentBox">
-        <div>{{comment.text|linebreaks }}</div>
+        {{comment.text|linebreaks }}
       </div>
       <br />
       {% elif not comment.is_active and user.is_authenticated %}

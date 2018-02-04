@@ -20,6 +20,8 @@ class PostForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
 
+    text = forms.CharField()
+
     class Meta:
         model = Comment
         fields = ('author', 'text',)
