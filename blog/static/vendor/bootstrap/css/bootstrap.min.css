@@ -27,8 +27,15 @@
 }
 
 .codify {
+  font-size: 85%;
   color: #e83e8c;
   word-break: break-word;
-  border-color: BLACK;
-  border: 5px;
+  border-color: solid black;
+  border-radius: 4px;
+}
+.precode {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    border: 0.05rem solid;
+    border-color: #bcbcbc;
 }

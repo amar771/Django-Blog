@@ -154,7 +154,8 @@ MARKDOWN_DEUX_STYLES = {
     "default": {
         "extras": {
             "html-classes": {"img": "img-fluid",
-                             "code": "codify"},
+                             "code": "codify",
+                             "pre": "precode"},
         },
     },
 }
