@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     # Third party applications
     'pagedown',
+    'markdown_deux',
 ]
 
 MIDDLEWARE = [

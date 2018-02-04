@@ -176,7 +176,7 @@ def about_new(request):
 def about_edit(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
     if request.method == "POST":
-        form = ProfileForm(request.post, instance=profile)
+        form = ProfileForm(request.POST, instance=profile)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user

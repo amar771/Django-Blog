@@ -10,6 +10,10 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 
+# Markdown
+from django.utils.safestring import mark_safe
+from markdown_deux import markdown
+
 
 # Create your models here.
 def upload_location(instance, filename):
@@ -32,6 +36,10 @@ class Profile(models.Model):
     twitter_link = models.CharField(max_length=250, blank=True)
     stackoverflow_link = models.CharField(max_length=250, blank=True)
 
+    def get_markdown_bio(self):
+        bio = self.bio
+        return mark_safe(markdown(bio))
+
 
 class Post(models.Model):
     # Link to another model
@@ -43,7 +51,6 @@ class Post(models.Model):
     subtitle = models.CharField(max_length=750)
     slug = models.SlugField(unique=True)
 
-    # Plain text and github markdownified text
     plain_text = models.TextField()
     text = models.TextField()
 
@@ -66,6 +73,12 @@ class Post(models.Model):
         self.published_date = timezone.now()
         self.is_active = True
         self.save()
+
+    def get_markdown_text(self):
+        return mark_safe(markdown(self.text))
+
+    def set_text_to_markdown(self):
+        self.text = markdown(self.plain_text)
 
     def delete(self):
         self.is_active = False

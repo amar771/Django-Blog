@@ -21,8 +21,10 @@
     </header>
 
     <!-- Main Content -->
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p}}
-        <button type="submit" class="save btn btn-default">Save</button>
-    </form>
+  <!-- Main Content -->
+  <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+    <div class="post-box">
+      {{ form.as_p }}
+      <button type="submit" class="save btn btn-default">Save</button></div>
+  </form>
 {% endblock %}

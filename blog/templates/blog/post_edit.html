@@ -6,24 +6,25 @@
 
 {% endblock %}
 
+
 {% block content %}
-    <!-- Page Header -->
-    <header class="masthead" style="background-image: url('img/post-bg.jpg')">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="post-heading" style="padding: 30px;">
-            </div>
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading" style="padding: 30px;">
           </div>
         </div>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <!-- Main Content -->
-    <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-      <div class="post-box">
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button></div>
-    </form>
+  <!-- Main Content -->
+  <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+    <div class="post-box">
+      {{ form.as_p }}
+      <button type="submit" class="save btn btn-default">Save</button></div>
+  </form>
 {% endblock %}
