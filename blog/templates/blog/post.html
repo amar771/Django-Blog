@@ -92,14 +92,13 @@
     <form method="POST" class="form-control-sm" action='.'>{% csrf_token %}
       <div class="comment-box">
             <div>{{ form|crispy }}</div>
-          
             <button type="submit" class="save btn btn-default">Post</button>
       </div>
     </form>
 
     <div class="comment-box">
     {% for comment in post.comments.all %}
-      {% if comment.is_active %}
+      {% if comment.is_active and comment.is_parent %}
       <div>
         <span style="float:left">{{comment.author}}</span>
 
@@ -107,12 +106,38 @@
             <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">X</a>
         {% endif %} 
 
-        <span style="float:right">  [{{comment.created_date|date:"Y-m-d"}}]</span>
         <span style="float:right;">{{comment.created_date|timesince}} ago  </span>
       </div>
       <div class="commentBox">
         {{comment.text|linebreaks }}
       </div>
+
+      <form method="POST" class="form-control-sm" action='.'>{% csrf_token %}
+        <div class="comment-box">
+              <div>{{ form|crispy }}</div>
+              <input name="parent_id" value="{{ comment.id }}" type="hidden">
+              <button type="submit" class="save btn btn-default">Reply</button>
+        </div>
+      </form>
+
+      <!-- Child comments -->
+      {% for child in comment.children %}
+      <div class="child-comment-box">
+        <div>
+          <span style="float:left">{{child.author}}</span>
+
+          {% if user.is_authenticated %}
+              <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">X</a>
+          {% endif %} 
+
+          <span style="float:right;">{{child.created_date|timesince}} ago  </span>
+        </div>
+        <div class="child-commentBox">
+          {{child.text|linebreaks }}
+        </div>
+      </div>
+      {% endfor %}
+
       <br />
       {% elif not comment.is_active and user.is_authenticated %}
         <div>

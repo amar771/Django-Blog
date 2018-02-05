@@ -72,14 +72,29 @@ def post_detail(request, slug):
 
     form = CommentForm(request.POST or None)
     if form.is_valid():
+
+        parent_obj = None
+        try:
+            parent_id = int(request.POST.get("parent_id"))
+        except:
+            parent_id = None
+
+        if parent_id:
+            parent_qs = Comment.objects.filter(id=parent_id)
+            if parent_qs.exists() and parent_qs.count() == 1:
+                parent_obj = parent_qs.first()
+
         comment = form.save(commit=False)
+        comment.parent = parent_obj
         comment.post = post
         comment.save()
         return redirect('post_detail', slug=slug)
+
     else:
         form = CommentForm()
 
-    return render(request, 'blog/post.html', {'post': post, 'form': form})
+    return render(request, 'blog/post.html', {'post': post,
+                                              'form': form})
 
 
 @login_required

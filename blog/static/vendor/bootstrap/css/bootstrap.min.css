@@ -12,9 +12,22 @@
 }
 
 .commentBox{
-    border-top: 1px solid black;
+    border-top: 1px solid gray;
     margin-top: 0px;
     margin-bottom: 0px;
+}
+
+.child-comment-box{
+    width: 80%;
+    margin-left: 20%;
+    text-align: left;
+}
+
+.child-commentBox{
+    border-top: 1px solid gray;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
 }
 
 .post-box {

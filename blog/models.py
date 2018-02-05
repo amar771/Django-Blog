@@ -96,11 +96,26 @@ class Post(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey('blog.Post', related_name='comments')
+
+    # Reply to comments
+    parent = models.ForeignKey("self", null=True, blank=True)
+
     author = models.CharField(max_length=200, default='anon')
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     approved_comment = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+
+    # Gets all the children/replies
+    def children(self):
+        return Comment.objects.filter(parent=self)
+
+    # Checks if instance is a parent.
+    @property
+    def is_parent(self):
+        if self.parent is not None:
+            return False
+        return True
 
     def approve(self):
         self.approved_comment = True
