@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
-from django.core.mail import send_mail
 from django.db.models import Q
 from .models import Post
 from .models import Comment
@@ -14,6 +13,10 @@ from .models import Profile
 from .forms import PostForm
 from .forms import CommentForm
 from .forms import ProfileForm
+
+# Send mail
+from django.core.mail import send_mail
+from .forms import ContactForm
 
 
 def post_list(request):
@@ -218,11 +221,18 @@ def about_edit(request, pk):
 
 
 def contact(request):
-    return render(request, 'blog/contact.html')
+    print('a')
+    if request.method == "POST":
+        form = ContactForm(request.POST or None)
+        if form.is_valid():
+            # Send mail stuff goes here!
+            return redirect('index')
 
+    else:
+        form = ContactForm()
+
+    print('b')
+    return render(request, 'blog/contact.html', {'form': form})
 
 def contact_send_mail(request):
-    senders_mail = request.POST.get('email')
-    print(senders_mail)
-
-    return redirect('index')
+    print("FAIL")

@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load markdown_deux_tags %}
 
 {% block content %}
     <!-- Page Header -->
@@ -15,7 +16,7 @@
       </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Main Content 
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
@@ -46,12 +47,15 @@
             <br>
             <div id="success"></div>
             <div class="form-group">
-              <a href="{% url 'contact_send_mail' %}" type="submit" class="btn btn-primary" id="send_mail_button">Send</a>
+              <a href="{% url 'index' %}" type="submit" class="btn btn-primary" id="send_mail_button">Send</a>
             </div>
           </form>
         </div>
       </div>
     </div>
 
-    <hr>
+    <hr>-->
+
+  {{ form.as_p }}
+
 {% endblock %}

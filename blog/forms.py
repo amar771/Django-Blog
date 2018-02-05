@@ -31,7 +31,7 @@ class CommentForm(forms.ModelForm):
 
 class ProfileForm(forms.ModelForm):
 
-    bio = forms.CharField(widget=PagedownWidget())
+    bio = forms.CharField(widget=PagedownWidget(show_preview=False))
 
     class Meta:
         model = Profile
@@ -44,3 +44,14 @@ class ProfileForm(forms.ModelForm):
                   'linkedin_link',
                   'twitter_link',
                   'stackoverflow_link',)
+
+
+class ContactForm(forms.Form):
+
+    email = forms.EmailField()
+    subject = forms.CharField(max_length=139)
+
+    class Meta:
+        fields = ('email',
+                  'subject',
+                  'message',)
