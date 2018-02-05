@@ -88,7 +88,7 @@
       </div>
     </div>
   
-    <!-- Comments -->
+    <!-- Post comment -->
     <form method="POST" class="form-control-sm" action='.'>{% csrf_token %}
       <div class="comment-box">
             <div>{{ form|crispy }}</div>
@@ -96,67 +96,140 @@
       </div>
     </form>
 
+  <!-- Comments -->
+  {% for comment in post.comments.all %}
     <div class="comment-box">
-    {% for comment in post.comments.all %}
       {% if comment.is_active and comment.is_parent %}
-      <div>
-        <span style="float:left">{{comment.author}}</span>
+      <!-- Active parent comment -->
+        <div class="blockquote-comment">
 
-        {% if user.is_authenticated %}
-            <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">X</a>
-        {% endif %} 
-
-        <span style="float:right;">{{comment.created_date|timesince}} ago  </span>
-      </div>
-      <div class="commentBox">
-        {{comment.text|linebreaks }}
-      </div>
-
-      <form method="POST" class="form-control-sm" action='.'>{% csrf_token %}
-        <div class="comment-box">
-              <div>{{ form|crispy }}</div>
-              <input name="parent_id" value="{{ comment.id }}" type="hidden">
-              <button type="submit" class="save btn btn-default">Reply</button>
-        </div>
-      </form>
-
-      <!-- Child comments -->
-      {% for child in comment.children %}
-      <div class="child-comment-box">
-        <div>
-          <span style="float:left">{{child.author}}</span>
+          <p>{{ comment.text|linebreaks }}</p>
+          <div class="footer-comment">
+            by {{ comment.author }} | {{ comment.created_date|timesince }} ago.
+          </div>
 
           {% if user.is_authenticated %}
-              <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">X</a>
-          {% endif %} 
+            <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">
+              <i class="fa fa-remove"></i>
+            </a>
+          {% endif %}
 
-          <span style="float:right;">{{child.created_date|timesince}} ago  </span>
+          <!-- Reply -->
+          <form method="POST" class="form-control-sm" action='.'>{% csrf_token %}
+            <div class="comment-box">
+                  <input name="parent_id" value="{{ comment.id }}" type="hidden">
+                  <button type="submit" class="save btn btn-default float-right">
+                    <i class="fa fa-pull-right fa-reply"></i>
+                  </button>
+                  <div>{{ form|crispy }}</div>
+            </div>
+          </form>
         </div>
-        <div class="child-commentBox">
-          {{child.text|linebreaks }}
-        </div>
-      </div>
-      {% endfor %}
 
-      <br />
-      {% elif not comment.is_active and user.is_authenticated %}
-        <div>
-          {{comment.author}}
 
-          <a class="btn" href="{% url 'comment_undelete' pk=comment.pk %}">Undo</a>
 
-          <span style="float:right;">{{comment.created_date|date:"Y-m-d"}}</span>
+        <!-- Replies -->
+        {% for child in comment.children %}
+          {% if child.is_active %}
+          <!-- Active child replis -->
+            <div class="child-comment-box">
+              <div class="blockquote-comment">
+                
+                {% if user.is_authenticated %}
+                <a class="btn btn-default float-right" href="{% url 'comment_remove' pk=child.pk %}">
+                  <i class="fa fa-remove"></i>
+                </a>
+                {% endif %}
+
+                <p>{{ child.text|linebreaks }}</p>
+                <div class="footer-comment">
+                  by {{ child.author }} | {{ child.created_date|timesince }} ago.
+                </div>
+
+              </div>
+            </div>
+          
+          {% elif user.is_authenticated and not child.is_active %}
+          <!-- Deleted child comments -->
+            <div class="child-comment-box">
+              <div class="blockquote-comment">
+
+                <a class="btn btn-default float-right" href="{% url 'comment_undelete' pk=child.pk %}">
+                  <i class="fa fa-check"></i>
+                </a>
+
+                <p>{{ child.text|linebreaks }}</p>
+                <div class="footer-comment">
+                  by {{ child.author }} | {{ child.created_date|timesince }} ago.
+                </div>
+
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+
+      {% elif not comment.is_active and user.is_authenticated and comment.is_parent %}
+      <!-- Deleted parent comments -->
+        <div class="blockquote-comment">
+
+          <p>{{ comment.text|linebreaks }}</p>
+          <div class="footer-comment">
+            by {{ comment.author }} | {{ comment.created_date|timesince }} ago.
+          </div>
+
+          <a class="btn btn-default" href="{% url 'comment_undelete' pk=comment.pk %}">
+            <i class="fa fa-check"></i>
+          </a>
+
         </div>
-        <div class="commentBox" style="color: red">
-          <div>{{ comment.text|linebreaks }}</div>
-        </div>
-        <br />
+
+        {% for child in comment.children %}
+          {% if child.is_active %}
+          <!-- Active child replis but not seenable because no parent -->
+            <div class="child-comment-box">
+              <div class="blockquote-comment">
+                
+                <a class="btn btn-default float-right" href="{% url 'comment_remove' pk=child.pk %}">
+                  <i class="fa fa-remove"></i>
+                </a>
+
+                <p>{{ child.text|linebreaks }}</p>
+                <div class="footer-comment">
+                  by {{ child.author }} | {{ child.created_date|timesince }} ago.
+                </div>
+
+              </div>
+            </div>
+          
+          {% elif user.is_authenticated and not child.is_active %}
+          <!-- Deleted child comments -->
+            <div class="child-comment-box">
+              <div class="blockquote-comment">
+
+                <a class="btn btn-default float-right" href="{% url 'comment_undelete' pk=child.pk %}">
+                  <i class="fa fa-check"></i>
+                </a>
+
+                <p>{{ child.text|linebreaks }}</p>
+                <div class="footer-comment">
+                  by {{ child.author }} | {{ child.created_date|timesince }} ago.
+                </div>
+
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+
       {% endif %}
-    {% empty %}
-      <div class="commentBox">
-        <div>No comments here yet.</div>
-      </div>
-    {% endfor %}
+
     </div>
-    <hr>
+
+  {% empty %}
+  <!-- If there are no comments -->
+    <div class="comment-box">
+      <div class="blockquote-comment">
+        No comments here yet :(
+      </div>
+    </div>
+  {% endfor %}
 {% endblock %}

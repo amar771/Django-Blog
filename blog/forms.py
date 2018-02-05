@@ -20,11 +20,13 @@ class PostForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
 
-    text = forms.CharField()
-
     class Meta:
         model = Comment
         fields = ('author', 'text',)
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['text'].widget.attrs.update({'style': 'height: 60px'})
 
 
 class ProfileForm(forms.ModelForm):
