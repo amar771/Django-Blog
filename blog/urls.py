@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^about/new$', views.about_new, name='about_new'),
     url(r'^about/(?P<pk>\d+)/edit$', views.about_edit, name='about_edit'),
     url(r'^contact$', views.contact, name='contact'),
+    url(r'^contact/sent$', views.contact_send_mail, name='contact_send_mail')
 ]
 
 if settings.DEBUG:

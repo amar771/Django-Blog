@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
+from django.core.mail import send_mail
 from django.db.models import Q
 from .models import Post
 from .models import Comment
@@ -220,7 +221,8 @@ def contact(request):
     return render(request, 'blog/contact.html')
 
 
-def search(request):
-    query = request.GET.get("q")
-    if query:
-        queryset_list = queryset_list.filter(title__icontains=query)
+def contact_send_mail(request):
+    senders_mail = request.POST.get('email')
+    print(senders_mail)
+
+    return redirect('index')
