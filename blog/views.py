@@ -16,6 +16,7 @@ from .forms import ProfileForm
 
 # Send mail
 from django.core.mail import send_mail
+from django.core.mail import BadHeaderError
 from .forms import ContactForm
 
 
@@ -221,18 +222,40 @@ def about_edit(request, pk):
 
 
 def contact(request):
-    print('a')
     if request.method == "POST":
         form = ContactForm(request.POST or None)
         if form.is_valid():
+            data = form.cleaned_data
             # Send mail stuff goes here!
+            contact_send_mail(data['email'],
+                              data['subject'],
+                              data['message'])
+
             return redirect('index')
 
     else:
         form = ContactForm()
 
-    print('b')
     return render(request, 'blog/contact.html', {'form': form})
 
-def contact_send_mail(request):
-    print("FAIL")
+
+def contact_send_mail(email, subject, message):
+    message_with_contact_info = email + '\n' + message
+    if subject and message:
+        try:
+            send_mail(subject=subject,
+                      message=message_with_contact_info,
+                      from_emai=email,
+                      recipient_list=['admin@example.com'])
+        except BadHeaderError:
+            # Implement something here for cases where this happens
+            return redirect('index')
+
+        # Success
+        return redirect('index')
+
+    else:
+        # This is a FAIL, implement something for this
+        return redirect('contact')
+
+    return redirect('index')

@@ -50,6 +50,7 @@ class ContactForm(forms.Form):
 
     email = forms.EmailField()
     subject = forms.CharField(max_length=139)
+    message = forms.CharField()
 
     class Meta:
         fields = ('email',
