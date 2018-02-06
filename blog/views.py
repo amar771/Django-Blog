@@ -228,6 +228,7 @@ def contact(request):
             data = form.cleaned_data
             # Send mail stuff goes here!
             contact_send_mail(data['email'],
+                              data['name'],
                               data['subject'],
                               data['message'])
 
@@ -239,14 +240,17 @@ def contact(request):
     return render(request, 'blog/contact.html', {'form': form})
 
 
-def contact_send_mail(email, subject, message):
-    message_with_contact_info = email + '\n' + message
+def contact_send_mail(email, name, subject, message):
+    message_with_contact_info = 'Email: ' + email
+    message_with_contact_info += '\nName: ' + name
+    message_with_contact_info += '\n' + message
     if subject and message:
         try:
             send_mail(subject=subject,
                       message=message_with_contact_info,
-                      from_emai=email,
+                      from_email='noreply@example.com',
                       recipient_list=['admin@example.com'])
+
         except BadHeaderError:
             # Implement something here for cases where this happens
             return redirect('index')

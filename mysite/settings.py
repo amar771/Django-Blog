@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+# Used for secret stuff
+from decouple import config
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,13 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@fahmk+lv53u-u#cuaf7_kqp9$w3g+w_gwqy0&3tze*(-_lfo-'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Application definition
 
@@ -139,14 +139,10 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'amar771.pythonanywhere.com', 'localhost']
+# https://simpleisbetterthancomplex.com/2015/11/26/package-of-the-week-python-decouple.html
+ALLOWED_HOSTS = config('ALLOWED_HOSTS',
+                       cast=lambda v: [s.strip() for s in v.split(',')])
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -162,3 +158,10 @@ MARKDOWN_DEUX_STYLES = {
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# https://simpleisbetterthancomplex.com/tutorial/2016/06/13/how-to-send-email.html
+EMAIL_HOST = config('EMAIL_HOST', default='')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
