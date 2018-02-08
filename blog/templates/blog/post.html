@@ -2,6 +2,10 @@
 {% load urlify %}
 {% load crispy_forms_tags %}
 
+{% block title %}
+  <title>{{ post.title }} - The Blog</title>
+{% endblock title %}
+
 {% block content %}
     <!-- Page Header -->
     {% if post.image %}

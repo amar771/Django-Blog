@@ -8371,4 +8371,88 @@ a.text-dark:focus, a.text-dark:hover {
 .invisible {
   visibility: hidden !important;
 }
+
+
+/* Custom */
+
+.comment-box{
+    width: 50%;
+    margin: auto;
+    text-align: left;
+}
+
+.commentBox{
+    border-top: 1px solid gray;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.child-comment-box{
+    width: 80%;
+    margin-left: 20%;
+    text-align: left;
+}
+
+.child-comment-box-deleted {
+    width: 80%;
+    margin-left: 20%;
+    text-align: left;
+    color: solid red!important;
+}
+
+.child-commentBox{
+    border-top: 1px solid gray;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+}
+
+.post-box {
+    width: 70%;
+    margin:auto;
+    text-align: left;
+}
+
+.post-form textarea, .post-form input {
+    width: 120%;
+}
+
+.codify {
+  font-size: 85%;
+  color: #e83e8c;
+  word-break: break-word;
+  border-color: solid black;
+  border-radius: 4px;
+}
+
+.precode {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    border: 0.05rem solid;
+    border-color: #bcbcbc;
+}
+
+.wmd-panel {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
+
+.blockquote-comment {
+    page-break-inside: avoid;
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 17.5px;
+    border: 0px solid #999;
+    border-left: 5px solid #eee;
+    border-bottom: 1px solid #999;
+}
+
+
+.footer-comment {
+    display: block;
+    font-size: 80%;
+    line-height: 1.42857143;
+    color: #777;
+}
+
 /*# sourceMappingURL=bootstrap.css.map */
