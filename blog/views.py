@@ -67,6 +67,8 @@ def index(request):
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
 
+    comments = post.comments.all().order_by("created_date")
+
     # Checks if post is deleted and is user authenticated to view it
     if not post.is_active and not request.user.is_authenticated():
         return redirect('post_list')
@@ -89,7 +91,12 @@ def post_detail(request, slug):
             if parent_qs.exists() and parent_qs.count() == 1:
                 parent_obj = parent_qs.first()
 
+        user = 'anon'
+        if request.user.is_authenticated:
+            user = request.user.username
+
         comment = form.save(commit=False)
+        comment.author = user
         comment.parent = parent_obj
         comment.post = post
         comment.save()
@@ -99,7 +106,8 @@ def post_detail(request, slug):
         form = CommentForm()
 
     return render(request, 'blog/post.html', {'post': post,
-                                              'form': form})
+                                              'form': form,
+                                              'comments': comments})
 
 
 @login_required

@@ -101,7 +101,7 @@
     </form>
 
   <!-- Comments -->
-  {% for comment in post.comments.all %}
+  {% for comment in comments %}
     <div class="comment-box">
       {% if comment.is_active and comment.is_parent %}
       <!-- Active parent comment -->
