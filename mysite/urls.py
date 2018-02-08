@@ -21,6 +21,11 @@ from django.contrib.auth import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+# 2FA
+from django_otp.admin import OTPAdminSite
+admin.site.__class__ = OTPAdminSite
+
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/login/$', views.login, name='login'),
