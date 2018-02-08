@@ -13,6 +13,7 @@ from .models import Profile
 from .forms import PostForm
 from .forms import CommentForm
 from .forms import ProfileForm
+from .decorators import check_recaptcha
 
 # Send mail
 from django.core.mail import send_mail
@@ -229,11 +230,17 @@ def about_edit(request, pk):
     return render(request, 'blog/about_edit.html', {'form': form})
 
 
+@check_recaptcha
 def contact(request):
     if request.method == "POST":
         form = ContactForm(request.POST or None)
-        if form.is_valid():
+        if form.is_valid() and request.recaptcha_is_valid:
             data = form.cleaned_data
+            spam = request.POST.get("username")
+
+            if spam:
+                return redirect('index')
+
             # Send mail stuff goes here!
             contact_send_mail(data['email'],
                               data['name'],

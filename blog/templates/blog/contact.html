@@ -5,6 +5,10 @@
   <title>Contact Me</title>
 {% endblock title %}
 
+{% block imports %}
+  <script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock imports %}
+
 {% block content %}
     <!-- Page Header -->
     <header class="masthead" style="background-image: url('img/contact-bg.jpg')">
@@ -58,6 +62,10 @@
                 <p class="help-block text-danger"></p>
               </div>
             </div>
+
+            <input type="text" name="username" id="user" style="display: none;" value="">
+
+            <div class="g-recaptcha" data-sitekey=""></div>
 
             <br>
             <div id="success"></div>
