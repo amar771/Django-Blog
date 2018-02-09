@@ -29,16 +29,6 @@ class Profile(models.Model):
 
     # User data
     bio = models.TextField(blank=True)
-    location = models.CharField(max_length=50, blank=True)
-    birth_date = models.DateTimeField(null=True, blank=True)
-    workplace = models.CharField(max_length=200, blank=True)
-
-    # Social networks
-    github_link = models.CharField(max_length=250, blank=True)
-    facebook_link = models.CharField(max_length=250, blank=True)
-    linkedin_link = models.CharField(max_length=250, blank=True)
-    twitter_link = models.CharField(max_length=250, blank=True)
-    stackoverflow_link = models.CharField(max_length=250, blank=True)
 
     def get_markdown_bio(self):
         bio = self.bio

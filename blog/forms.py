@@ -35,15 +35,7 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ('bio',
-                  'location',
-                  'birth_date',
-                  'workplace',
-                  'github_link',
-                  'facebook_link',
-                  'linkedin_link',
-                  'twitter_link',
-                  'stackoverflow_link',)
+        fields = ('bio',)
 
 
 class ContactForm(forms.Form):
