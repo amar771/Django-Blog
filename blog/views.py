@@ -26,26 +26,16 @@ def post_list(request):
                                 filter(is_active=True).\
                                 order_by('-published_date')
 
-    paginator = Paginator(posts, 10)
-    page = request.GET.get('page')
-
     # If query exists do pagination for query
     query = request.GET.get("q")
     if query:
-        posts = posts.filter(Q(title__icontains=query) |
-                             Q(subtitle__icontains=query))
-
-        try:
-            posts = paginator.page(page)
-
-        except PageNotAnInteger:
-            posts = paginator.page(1)
-
-        except EmptyPage:
-            posts = paginator.page(paginator.num_pages)
+        posts = search(request, query)
 
     # If query does not exist do standard pagination
     else:
+
+        paginator = Paginator(posts, 3)
+        page = request.GET.get('page')
         try:
             posts = paginator.page(page)
 
@@ -65,10 +55,40 @@ def index(request):
     return redirect('post_list')
 
 
+def search(request, query):
+    posts = Post.objects.filter(published_date__lte=timezone.now()).\
+                                filter(is_active=True).\
+                                order_by('-published_date')
+
+    # If query exists do pagination for query)
+    posts = posts.filter(Q(title__icontains=query) |
+                         Q(subtitle__icontains=query))
+
+    paginator = Paginator(posts, 3)
+    page = request.GET.get('page')
+
+    try:
+        posts = paginator.page(page)
+
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+
+    except EmptyPage:
+        print('empty')
+        posts = paginator.page(paginator.num_pages)
+
+    return posts
+
+
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
 
     comments = post.comments.all().order_by("created_date")
+
+    query = request.GET.get("q")
+    if query:
+        posts = search(request, query)
+        return render(request, 'blog/index.html', {'posts': posts})
 
     # Checks if post is deleted and is user authenticated to view it
     if not post.is_active and not request.user.is_authenticated():
@@ -193,6 +213,11 @@ def about_empty(request):
 def about(request):
     profile = Profile.objects.filter(pk=1)
 
+    query = request.GET.get("q")
+    if query:
+        posts = search(request, query)
+        return render(request, 'blog/index.html', {'posts': posts})
+
     if not profile:
         return about_empty(request)
 
@@ -232,6 +257,12 @@ def about_edit(request, pk):
 
 @check_recaptcha
 def contact(request):
+    # Search
+    query = request.GET.get("q")
+    if query:
+        posts = search(request, query)
+        return render(request, 'blog/index.html', {'posts': posts})
+
     if request.method == "POST":
         form = ContactForm(request.POST or None)
         if form.is_valid() and request.recaptcha_is_valid:

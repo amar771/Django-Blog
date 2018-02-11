@@ -5,23 +5,6 @@
   <title>The Blog</title>
 {% endblock title %}
 
-{% block navigation_search %}
-
-  <!-- Search -->
-  <form method='GET' action=''>
-    <div class="col-sm">
-    <div class="input-group">
-      <input type='text' class="form-control" name='q' placeholder="Search posts" value='{{ request.GET.q }}' /n>
-      <span class="input-group-btn">
-        <button class='btn btn-default' type='submit'>
-          <i class="fa fa-search"></i>
-        </button>
-      </span>
-    </div></div>
-  </form>
-
-{% endblock %}
-
 {% block content %}
 
   <!-- Page Header -->
@@ -67,11 +50,11 @@
           <span align="center"> Page {{ posts.number }} of {{ posts.paginator.num_pages }}</span>
 
           {% if posts.has_previous %}
-            <a class="btn btn-primary float-left" href="?page={{ posts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&larr; Newer Posts</a>
+            <a class="btn btn-primary float-left" href="?page={{ posts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&larr; Newer</a>
           {% endif %}
 
           {% if posts.has_next %}
-            <a class="btn btn-primary float-right" href="?page={{ posts.next_page_number }}{% if request.GET.q %}&q={{request.GET.q }}{% endif %}">Older Posts &rarr;</a>
+            <a class="btn btn-primary float-right" href="?page={{ posts.next_page_number }}{% if request.GET.q %}&q={{request.GET.q }}{% endif %}">Older &rarr;</a>
           {% endif %}
         </div>
       </div>
