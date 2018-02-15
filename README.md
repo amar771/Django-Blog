@@ -2,7 +2,7 @@
 
 My personal blog project.
 
-
+### [Installation](https://zloja.com/post/setting-up-this-blog/)
 
 *Thanks to*
   * https://github.com/henriquebastos/python-decouple/
